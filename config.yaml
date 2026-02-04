@@ -1,0 +1,44 @@
+# DomRecon Configuration
+# This file can be placed at:
+#   - /etc/domrecon/config.yaml
+#   - $HOME/.domrecon/config.yaml
+#   - ./config.yaml
+
+# Output settings
+output: json          # json or text
+output-file: ""       # empty for stdout, or path to file
+verbose: false        # enable verbose logging
+
+# Concurrency settings
+concurrency: 10       # number of concurrent workers
+
+# Scan settings
+skip-nuclei: false    # skip vulnerability scanning
+skip-ports: false     # skip port scanning
+skip-dirs: false      # skip directory enumeration
+
+# Ports to scan (common web and service ports)
+ports:
+  - "21"    # FTP
+  - "22"    # SSH
+  - "23"    # Telnet
+  - "25"    # SMTP
+  - "53"    # DNS
+  - "80"    # HTTP
+  - "110"   # POP3
+  - "143"   # IMAP
+  - "443"   # HTTPS
+  - "3306"  # MySQL
+  - "3389"  # RDP
+  - "5432"  # PostgreSQL
+  - "6379"  # Redis
+  - "8000"  # HTTP Alt
+  - "8080"  # HTTP Proxy
+  - "8443"  # HTTPS Alt
+
+# Server settings (for service mode)
+addr: ":8080"         # listen address
+
+# Paths (typically set in container)
+wordlist-path: "/app/wordlists/quickhits.txt"
+templates-path: "/app/nuclei-templates"

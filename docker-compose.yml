@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  domrecon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: domrecon
+    ports:
+      - "8080:8080"
+    environment:
+      - DOMRECON_VERBOSE=true
+      - DOMRECON_CONCURRENCY=20
+      - DOMRECON_OUTPUT=json
+    volumes:
+      # Mount custom config if needed
+      - ./config.yaml:/etc/domrecon/config.yaml:ro
+      # Mount custom wordlists if needed
+      # - ./wordlists:/app/wordlists:ro
+      # Mount nuclei templates if needed
+      # - ./nuclei-templates:/app/nuclei-templates:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 256M
