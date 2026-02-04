@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/spf13/viper"
 )
 
@@ -39,6 +41,11 @@ func Load() (*Config, error) {
 
 	if err := viper.Unmarshal(cfg); err != nil {
 		return nil, err
+	}
+
+	// Heroku sets PORT env var - override ServerAddr if present
+	if port := os.Getenv("PORT"); port != "" {
+		cfg.ServerAddr = ":" + port
 	}
 
 	return cfg, nil
